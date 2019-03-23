@@ -1,0 +1,309 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>SVU Health Centre</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+  <!-- Bootstrap core CSS -->
+  <link href="{%  static 'css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+  <!-- Material Design Bootstrap -->
+  <link href="{%  static 'css/mdb.min.css' %}" rel="stylesheet" type="text/css">
+  <!-- Your custom styles (optional) -->
+  <link href="{%  static 'css/style.css' %}" rel="stylesheet" type="text/css">
+    <style type="text/css">
+        body {
+          background-color:#fafafa;
+          font-family:'Roboto';
+        }
+
+        .navbar-brand img {
+            margin-top: -5px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+        .container { margin:150px auto;}
+    </style>
+</head>
+<body>
+{% comment %}<div class="alert alert-info alert-dismissable">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      {{msg.message}}
+    </div>{% endcomment %}
+{% if messages %}
+  {% for msg in messages %}
+
+    <!-- Central Modal Medium Success -->
+
+  <div class="modal-dialog modal-notify modal-success" role="modal">
+    <!--Content-->
+    <div class="modal-content">
+      <!--Header-->
+      <div class="modal-header">
+        <p class="heading lead">Modal Success</p>
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="white-text">&times;</span>
+        </button>
+      </div>
+
+      <!--Body-->
+      <div class="modal-body">
+        <div class="text-center">
+          <i class="fas fa-check fa-4x mb-3 animated rotateIn"></i>
+          <p>{{ msg.message }}</p>
+        </div>
+      </div>
+
+      <!--Footer-->
+      <div class="modal-footer justify-content-center">
+        <a type="button" class="btn btn-success">Get it now <i class="far fa-gem ml-1 text-white"></i></a>
+        <a type="button" class="btn btn-outline-success waves-effect" data-dismiss="modal">No, thanks</a>
+      </div>
+    </div>
+    <!--/.Content-->
+  </div>
+<!-- Central Modal Medium Success-->
+  {% endfor %}
+{% endif %}
+<div class="card offset-md-3 offset-sm-0 " style="max-width: 50rem;">
+    <div class="card-header text-center light-blue darken-3 white-text ">
+    <h4 class="card-title"><i class="fas fa-notes-medical"></i> Issue Stock To Pharmacy!</h4>
+    </div>
+    <div class="card-body p-5">
+
+<form method="post" action="" id="PharmacyIssueForm">
+
+      {% csrf_token %}
+        
+
+        <div class="md-form mb-5">
+          <i class="fas fa-calendar-plus prefix grey-text"></i>
+          <input type="text" id="contact" class="form-control" name="issue_date">
+          <label >Stock Issue Date</label>
+        </div>
+      <div id="czContainer">
+            <div id="first">
+                <div class="recordset">
+                    <div class="fieldRow clearfix">
+                       <div class="row">
+                        <div class="col-md-4">
+                            <div id="tab_0_name" class="md-form mb-5">   
+                                <select class="browser-default custom-select" name="tab_0_name" id="tab_0_name">
+                                    <option disabled selected>Tablet Name</option>
+                                    {% for tab in TotalTabs %}
+                                    <option value="{{ tab.TabletName }}">{{ tab.TabletName }}</option>
+                                    {% endfor %}
+                                  </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div id="tab_0_qty" class="md-form mb-5">
+                                    <i class="fas fa-clipboard-list prefix grey-text"></i> 
+                                    <input type="text" class="form-control" id="tab_0_qty" name="tab_0_qty">
+                                    <label>Quantity</label>  
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div id="tab_0_rate" class="md-form mb-5">       
+                               <i class="fas fa-hand-holding-usd prefix grey-text"></i>
+                               <input type="text" class="form-control" id="tab_0_rate" name="tab_0_rate">
+                               <label>Rate/unit</label> </div>    
+                            </div>
+                        </div>      
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+        <div class="col-md-6">
+          <div class="md-form mb-5">
+            <i class="fas fa-toilet-paper prefix grey-text"></i>
+            <input type="text" id="sname" class="form-control" name="total_bal">
+            <label >Total Balance</label>
+          </div>
+        </div>
+       </div>
+        
+      
+      <div class="text-center">
+        <button class="btn btn-default" type="submit">Issue Stock</button>
+      </div>
+        
+     
+  
+</form>
+
+</div>
+</div>
+     <!-- SCRIPTS -->
+  <!-- JQuery -->
+  <script type="text/javascript" src="{%  static 'js/jquery-3.3.1.min.js' %}"></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript" src="{%  static 'js/popper.min.js' %}"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="{%  static 'js/bootstrap.min.js' %}"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="{%  static 'js/mdb.js' %}"></script>
+
+ <script type="text/javascript">
+        (function ($, undefined) {
+    $.fn.czMore = function (options) {
+
+        //Set defauls for the control
+        var defaults = {
+            max: 5,
+            min: 0,
+            onLoad: null,
+            onAdd: null,
+            onDelete: null,
+            styleOverride: false,
+        };
+        //Update unset options with defaults if needed
+        var options = $.extend(defaults, options);
+        $(this).bind("onAdd", function (event, data) {
+            options.onAdd.call(event, data);
+        });
+        $(this).bind("onLoad", function (event, data) {
+            options.onLoad.call(event, data);
+        });
+        $(this).bind("onDelete", function (event, data) {
+            options.onDelete.call(event, data);
+        });
+        //Executing functionality on all selected elements
+        return this.each(function () {
+            var obj = $(this);
+            var i = obj.children(".recordset").length;
+            var divPlus = '<i class="fas fa-2x fa-plus-square md-form mb-5" id="btnPlus"></i>';
+            var count = '<input id="' + this.id + '_czMore_txtCount" name="' + this.id + '_czMore_txtCount" type="hidden" value="0" size="5" />';
+
+            obj.before(count);
+            var recordset = obj.children("#first");
+            obj.after(divPlus);
+            var set = recordset.children(".recordset").children().first();
+            var btnPlus = obj.siblings("#btnPlus");
+
+            if(!options.styleOverride) {
+              btnPlus.css({
+                  'float': 'right',
+                      'border': '0px',
+
+                      'background-position': 'center center',
+                      'background-repeat': 'no-repeat',
+                      'height': '25px',
+                      'width': '25px',
+                  'cursor': 'pointer',
+              });
+            }
+
+            if (recordset.length) {
+                obj.siblings("#btnPlus").click(function () {
+                    var i = obj.children(".recordset").length;
+                    var item = recordset.clone().html();
+                    i++;
+                    item = item.replace(/\[([0-9]\d{0})\]/g, "[" + i + "]");
+                    item = item.replace(/\_([0-9]\d{0})\_/g, "_" + i + "_");
+                    //$(element).html(item);
+                    //item = $(item).children().first();
+                    //item = $(item).parent();
+
+                    obj.append(item);
+                    loadMinus(obj.children().last());
+                    minusClick(obj.children().last());
+                    if (options.onAdd != null) {
+                        obj.trigger("onAdd", i);
+                    }
+
+                    obj.siblings("input[name$='czMore_txtCount']").val(i);
+                    return false;
+                });
+                recordset.remove();
+                for (var j = 0; j <= i; j++) {
+                    loadMinus(obj.children()[j]);
+                    minusClick(obj.children()[j]);
+                    if (options.onAdd != null) {
+                        obj.trigger("onAdd", j);
+                    }
+                }
+
+                if (options.onLoad != null) {
+                    obj.trigger("onLoad", i);
+                }
+                //obj.bind("onAdd", function (event, data) {
+                //If you had passed anything in your trigger function, you can grab it using the second parameter in the callback function.
+                //});
+            }
+
+            function resetNumbering() {
+                $(obj).children(".recordset").each(function (index, element) {
+                   $(element).find('input:text, input:password, input:file, select, textarea').each(function(){
+                        old_name = this.name;
+                        new_name = old_name.replace(/\_([0-9]\d{0})\_/g, "_" + (index + 1) + "_");
+                        this.id = this.name = new_name;
+                        //alert(this.name);
+                    });
+                    index++
+                    minusClick(element);
+                });
+            }
+
+            function loadMinus(recordset) {
+                var divMinus = '<i class="fas fa-times fa-2x md-form mb-5" id="btnMinus"></i>';
+                $(recordset).children().first().before(divMinus);
+                var btnMinus = $(recordset).children("#btnMinus");
+                if(!options.styleOverride) {
+                  btnMinus.css({
+                      'float': 'right',
+                      'border': '0px',
+
+                      'background-position': 'center center',
+                      'background-repeat': 'no-repeat',
+                      'height': '25px',
+                      'width': '25px',
+                      'cursor': 'poitnter',
+                  });
+              }
+            }
+
+            function minusClick(recordset) {
+                $(recordset).children("#btnMinus").click(function () {
+                    var i = obj.children(".recordset").length;
+                    var id = $(recordset).attr("data-id")
+                    $(recordset).remove();
+                    resetNumbering();
+                    obj.siblings("input[name$='czMore_txtCount']").val(obj.children(".recordset").length);
+                    i--;
+                    if (options.onDelete != null) {
+                        if (id != null)
+                            obj.trigger("onDelete", id);
+                    }
+                });
+            }
+        });
+    };
+})(jQuery);
+        $("#czContainer").czMore();
+    </script>
+ <script>
+      $('#PharmacyIssueForm').on('submit', function(event){
+    console.log("form submitted!")  // sanity check
+     return_function();
+});
+  </script>
+ <script>
+     function return_function() {
+         console.log("return_function is working!")
+         $.ajax({
+             success : function(json) {
+                 console.log(json);
+             }
+
+         });
+     };
+ </script>
+</body>
+</html>
