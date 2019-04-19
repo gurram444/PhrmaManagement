@@ -28,13 +28,14 @@ def studentregister(request):
         bgp = request.POST['bloodgroup']
         addr = request.POST['address']
         city = request.POST['city']
+        pic = request.FILES['image']
         Accept = 'False'
 
 
         insert = models.Student(Admission_number = admno, Student_name = sname,Father_name = fname, Mother_name = mname,doj = doj, coursecomplete =doc,
                                 department = dept, password = pwd, gender = sex, dob = dob, relegion = rel, caste = caste, sub_caste = s_caste,
                                 course = course, contact_no = phno, email = email, aadhar_no = adno, Age = age, bloodgroup = bgp, address = addr,
-                                city = city, Status = Accept)
+                                city = city, Status = Accept, profile_image = pic)
 
         insert.save()
 
@@ -70,8 +71,8 @@ def studentlogin(request):
 def StudentLoggedIn(request):
     if request.session.has_key('Admission_number'):
         Admission_number = request.session['Admission_number']
-
-        return render(request,'Student/logged2.html',{'Admission_number':Admission_number})
+        x = models.Student.objects.get(Admission_number=Admission_number)
+        return render(request,'Student/logged2.html',{'Admission_number':Admission_number, 'x':x})
     return redirect('studentlogin')
 
 

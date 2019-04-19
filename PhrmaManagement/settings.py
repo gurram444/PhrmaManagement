@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'PhrmaManagement.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'PharmacyDB',
+        'NAME': 'PharmacyDB4',
     }
 }
 
@@ -133,3 +133,5 @@ EMAIL_HOST='smtp.gmail.com'
 EMAIL_HOST_USER='satyasairaviteja05@gmail.com'
 EMAIL_HOST_PASSWORD = 9701332217
 EMAIL_PORT=587
+
+AUTH_PROFILE_MODULE = 'Student.UserProfile'

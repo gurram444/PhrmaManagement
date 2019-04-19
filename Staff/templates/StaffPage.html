@@ -29,7 +29,7 @@
   <!-- Start your project here-->
   <body >
 
-<!--Navbar -->
+
 <!--Navbar-->
 <nav class="navbar navbar-expand-lg  navbar-dark cyan">
 
@@ -64,7 +64,10 @@
         <a class="nav-link" href="#">Medicine Shortage</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="./LogOut/">LogOut</a>
+        <a class="nav-link" href="/Staff/Staffpage/issuedops/">Issued OP's</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/Staff/Staffpage/LogOut/">LogOut</a>
       </li>
 
       <!-- Dropdown -->
@@ -105,7 +108,7 @@
 <div class="card text-white  cyan lighten-3 mb-3 offset-md-3 offset-sm-0" style="max-width: 30rem;">
   <div class="card-header">Student Details</div>
   <div class="card-body">
-    <form method="POST" action="./GetStudent/" id="post-form">
+    <form method="POST" action="/Staff/Staffpage/GetStudent/">
      {% csrf_token %}
  <div class="form-group" >
     <div class="row">
@@ -116,13 +119,15 @@
     <input type="text" class="form-control" name="Admission_number" placeholder="Enter Student Id" id="Admission_number">
   </div>
   </div>
-  <center><button type="submit" class="btn btn-indigo" data-toggle="collapse" data-target="#StudentDetails"
-          aria-expanded="true" aria-controls="StudentDetails">Submit</button></center>
+  <div class="text-center">
+        <button class="btn btn-indigo" type="submit">Get Details</button>
+      </div>
   </div>
 </form>
   </div>
 </div>
 
+{% if Details %}
 <div class="table-responsive">
             <table class="table table-striped" id="StudentDetails">
               <thead>
@@ -138,17 +143,19 @@
 
 
                             <tr>
-
-                            
+                                <td>{{ Details.Admission_number }}</td>
+                                <td>{{ Details.Student_name }}</td>
+                                <td>{{ Details.gender }}</td>
+                                <td>{{ Details.Age }}</td>
+                                <td>{{ Details.contact_no }}</td>
                             </tr>
-
 
               </tbody>
             </table>
           </div>
-<center><a class="btn btn-indigo" href="#" data-toggle="modal" data-target="#OPForm">Generate OP</a>
+<center><a class="btn btn-indigo" href="./GenerateOP/{{ Details.Admission_number }}">Generate OP</a>
   </center>
-
+{% endif %}
 
 <div class="modal fade" id="OPForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
   aria-hidden="true">
@@ -300,7 +307,7 @@
     </div>
     <div id="collapseOne2" class="collapse" aria-labelledby="headingOne2" data-parent="#accordionExample275">
       <div class="card-body">
-           <a class="btn btn blue-gradient btn-sm" type="button" href="./StudentMedicineIssue/">Click Here to Issue Medicines to Students</a>
+           <a class="btn btn blue-gradient btn-sm" type="button" href="/Staff/Staffpage/ops/">Click Here to Issue Medicines to Students</a>
 
       </div>
     </div>
@@ -375,154 +382,6 @@
  }
  </script>
 
-  <script>
-      $('#post-form').on('submit', function(event){
-    event.preventDefault();
-    console.log("form submitted!")  // sanity check
-    create_post();
-});
-  </script>
-  <script>
-      function create_post() {
-    console.log("create post is working!") // sanity check
-    $.ajax({
-        url : "GetStudent/", // the endpoint
-        type : "POST", // http method
-        data : { the_post : $('#Admission_number').val() }, // data sent with the post request
-
-
-
-        // handle a successful response
-        success : function(json) {
-            $('#Admission_number').val(''); // remove the value from the input
-            $('#results').html("<div></div>");
-            console.log(json); // log the returned json to the console
-            $("#StudentDetails").prepend("<td>"+json.Admission_number+"</td>",
-                                         "<td>"+json.Student_name+"</td>",
-                                         "<td>"+json.gender+"</td>",
-                                         "<td>"+json.Age+"</td>",
-                                         "<td>"+json.Contact_no+"</td>");
-            console.log("success"); // another sanity check
-        },
-
-        // handle a non-successful response
-        error : function(xhr,errmsg,err) {
-            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-        }
-    });
-};
-     $(function() {
-
-
-
-
-
-    // This function gets cookie with a given name
-
-    function getCookie(name) {
-
-        var cookieValue = null;
-
-        if (document.cookie && document.cookie != '') {
-
-            var cookies = document.cookie.split(';');
-
-            for (var i = 0; i < cookies.length; i++) {
-
-                var cookie = jQuery.trim(cookies[i]);
-
-                // Does this cookie string begin with the name we want?
-
-                if (cookie.substring(0, name.length + 1) == (name + '=')) {
-
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-
-                    break;
-
-                }
-
-            }
-
-        }
-
-        return cookieValue;
-
-    }
-
-    var csrftoken = getCookie('csrftoken');
-
-
-
-    /*
-
-    The functions below will create a header with csrftoken
-
-    */
-
-
-
-    function csrfSafeMethod(method) {
-
-        // these HTTP methods do not require CSRF protection
-
-        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-
-    }
-
-    function sameOrigin(url) {
-
-        // test that a given url is a same-origin URL
-
-        // url could be relative or scheme relative or absolute
-
-        var host = document.location.host; // host + port
-
-        var protocol = document.location.protocol;
-
-        var sr_origin = '//' + host;
-
-        var origin = protocol + sr_origin;
-
-        // Allow absolute or scheme relative URLs to same origin
-
-        return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
-
-            (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
-
-            // or any other URL that isn't scheme relative or absolute i.e relative.
-
-            !(/^(\/\/|http:|https:).*/.test(url));
-
-    }
-
-
-
-    $.ajaxSetup({
-
-        beforeSend: function(xhr, settings) {
-
-            if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
-
-                // Send the token to same-origin, relative URLs only.
-
-                // Send the token only if the method warrants CSRF protection
-
-                // Using the CSRFToken value acquired earlier
-
-                xhr.setRequestHeader("X-CSRFToken", csrftoken);
-
-            }
-
-        }
-
-    });
-
-
-
-});
-  </script>
 
 </body>
 

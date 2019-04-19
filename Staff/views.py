@@ -1,9 +1,11 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from . import models
-from Admin.models import AddStaff,PharmacyAvailableStock,StudentTabDetails,StudentMedicineIssue
+from Admin.models import AddStaff, PharmacyAvailableStock, StudentTabDetails, StudentMedicineIssue,OPDetails
 from Student.models import Student
 from django.http import HttpResponse
 import json
+
+
 # Create your views here.
 
 
@@ -25,74 +27,109 @@ def stafflogin(request):
 
     return render(request, "stafflogin.html")
 
+
 def staffhome(request):
     if request.session.has_key('StaffId'):
         StaffId = request.session['StaffId']
-        return render(request, "StaffPage.html", {'StaffId':StaffId})
+        return render(request, "StaffPage.html", {'StaffId': StaffId})
     else:
         return redirect('stafflogin')
+
 
 def stafflogout(request):
     if request.session.has_key('StaffId'):
         request.session.flush()
         return redirect('stafflogin')
 
+
 def GetStudent(request):
-    if request.method=='POST':
-        admno = int(request.POST.get('the_post'))
-        rec = Student.objects.get(Admission_number=admno)
-        response_data={}
-        response_data['Admission_number']=rec.Admission_number
-        response_data['Student_name'] = rec.Student_name
-        response_data['gender'] = rec.gender
-        response_data['Age'] = rec.Age
-        response_data['Contact_no'] = rec.contact_no
-        return HttpResponse(
-            json.dumps(response_data),
-            content_type="application/json"
-        )
-    else:
-        return HttpResponse(
-            json.dumps({"nothing to see": "this isn't happening"}),
-            content_type="application/json"
-        )
-
-
-
-def StudentMedicineissue(request):
-    if request.method == 'POST':
-        issue_date = request.POST['issue_date']
-        op_number = request.POST['op_number']
-        Admission_number = request.POST['Admission_number']
-        Stuent_name = request.POST['Student_name']
-        TotalBalance = request.POST['total_bal']
-        insert1 = StudentTabDetails(AdmissionNnumber=Admission_number,OPNumber=op_number,IssueDate=issue_date,
-                                   TotalBalance=TotalBalance,StudentName=Stuent_name)
-        insert1.save()
-        count = int(request.POST['czContainer_czMore_txtCount'])
-        i = 1
-        while i <= count:
-            TabletName = request.POST['tab_' + str(i) + '_name']
-            TotalTabsIssued = int(request.POST['tab_' + str(i) + '_qty'])
-            RatePerUnit = int(request.POST['tab_' + str(i) + '_rate'])
-            insert = StudentMedicineIssue(Op_id=insert1, TabletName=TabletName, TotalTabsIssued=TotalTabsIssued,
-                                       RatePerUnit=RatePerUnit)
-            try:
-                x = PharmacyAvailableStock.objects.get(TabletName=TabletName)
-                ExistingTabs = int(x.TotalTabs)
-                if ExistingTabs >= TotalTabsIssued:
-                    UpdatedTabs = ExistingTabs - TotalTabsIssued
-                    x.TotalTabs = UpdatedTabs
-                    x.save()
-                else:
-                    return HttpResponse('Issued Quantiy Of ' + TabletName + ' Are Not Available in Stock.')
-            except:
-                pass
-
-            insert.save()
-            i += 1
-        return render(request, 'StudentMedincineIssue.html', message="sucess")
+    if request.session.has_key('StaffId'):
+        StaffId = request.session['StaffId']
+        if request.method == 'POST':
+            admno = request.POST['Admission_number']
+            rec = Student.objects.get(Admission_number=admno)
+            return render(request, "StaffPage.html", {'StaffId': StaffId, 'Details':rec})
 
     else:
-        tabs = PharmacyAvailableStock.objects.all()
-        return render(request,'StudentMedincineIssue.html',{'tabs':tabs})
+        return redirect('stafflogin')
+
+
+def generateop(request, Admission_number):
+    if request.session.has_key('StaffId'):
+        Admission_number = Admission_number
+        insert = OPDetails(AdmissionNumber=Admission_number)
+        insert.save()
+        last_op = OPDetails.objects.all().order_by('id').last()
+        studentdetails = Student.objects.get(Admission_number=Admission_number)
+        return render(request, 'opform.html', {'op_no': last_op,'Details':studentdetails})
+    else:
+        return redirect('stafflogin')
+
+
+def issueop(request):
+    if request.session.has_key('StaffId'):
+        ops = OPDetails.objects.filter(Status='False')
+        return render(request,'ops.html',{'ops':ops})
+    else:
+        return redirect('stafflogin')
+
+
+def issuedops(request):
+    if request.session.has_key('StaffId'):
+        ops = OPDetails.objects.filter(Status='True')
+        return render(request, 'StudentIssuedMedicines.html', {'ops':ops})
+    else:
+        return redirect('stafflogin')
+
+
+def StudentMedicineissue(request,op_number):
+    if request.session.has_key('StaffId'):
+        if request.method == 'POST':
+            op_number = request.POST['op_number']
+            op = OPDetails.objects.get(OPNumber=op_number)
+            TotalBalance = request.POST['total_bal']
+            op.TotalBalance = TotalBalance
+            op.Status = 'True'
+            op.save()
+            count = int(request.POST['czContainer_czMore_txtCount'])
+            i = 1
+            while i <= count:
+                TabletName = request.POST['tab_' + str(i) + '_name']
+                TotalTabsIssued = int(request.POST['tab_' + str(i) + '_qty'])
+                RatePerUnit = int(request.POST['tab_' + str(i) + '_rate'])
+                insert = StudentMedicineIssue(Op_id=op, TabletName=TabletName, TotalTabsIssued=TotalTabsIssued,
+                                              RatePerUnit=RatePerUnit)
+                try:
+                    x = PharmacyAvailableStock.objects.get(TabletName=TabletName)
+                    ExistingTabs = int(x.TotalTabs)
+                    if ExistingTabs >= TotalTabsIssued:
+                        UpdatedTabs = ExistingTabs - TotalTabsIssued
+                        x.TotalTabs = UpdatedTabs
+                        x.save()
+                    else:
+                        return HttpResponse('Issued Quantiy Of ' + TabletName + ' Are Not Available in Stock.')
+                except:
+                    pass
+
+                insert.save()
+                i += 1
+            return render(request, 'StudentMedincineIssue.html')
+
+        else:
+            tabs = PharmacyAvailableStock.objects.all()
+            op = OPDetails.objects.get(OPNumber=op_number)
+            return render(request, 'StudentMedincineIssue.html', {'tabs': tabs, 'op':op})
+
+    else:
+        return redirect('stafflogin')
+
+
+def viewopissue(request, op_number):
+    if request.session.has_key('StaffId'):
+        op = OPDetails.objects.get(OPNumber=op_number)
+        tabs = StudentMedicineIssue.objects.filter(Op_id=op)
+
+        return render(request, 'viewopissue.html',{'tabs':tabs})
+    else:
+        return redirect('stafflogin')
+

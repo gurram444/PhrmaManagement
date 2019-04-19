@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -25,8 +25,16 @@ class Student(models.Model):
     bloodgroup = models.CharField(max_length=10)
     address = models.CharField(max_length=40)
     city = models.CharField(max_length=20)
-    profile_image = models.ImageField(upload_to='image')
+    profile_image = models.ImageField(upload_to='image/')
     Status = models.CharField(max_length=10)
 
     def __str__(self):
         return self.Student_name
+
+
+class UserProfile(models.Model):
+    url = models.URLField()
+    home_address = models.TextField()
+    phone_numer = models.BigIntegerField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    avatar = models.ImageField(upload_to='image/')
