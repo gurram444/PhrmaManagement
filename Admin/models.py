@@ -90,7 +90,7 @@ class AddStaff(models.Model):
     ContactNumber = models.BigIntegerField()
     UserName = models.CharField(max_length=20)
     Password = models.CharField(max_length=20)
-    StaffImage = models.ImageField(upload_to='StaffImages')
+    StaffImage = models.ImageField(upload_to='StaffImages/')
 
     def __str__(self):
         return self.StaffName

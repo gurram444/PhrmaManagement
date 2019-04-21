@@ -1,86 +1,101 @@
 {% load static %}
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
+  <title>SVU HEALTH CENTRE</title>
+  <!-- Required meta tags -->
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>SVU Health Centre</title>
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
-  <!-- Bootstrap core CSS -->
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <!--     Fonts and icons     -->
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+    <!-- Bootstrap core CSS -->
   <link href="{%  static 'css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
   <!-- Material Design Bootstrap -->
   <link href="{%  static 'css/mdb.min.css' %}" rel="stylesheet" type="text/css">
   <!-- Your custom styles (optional) -->
   <link href="{%  static 'css/style.css' %}" rel="stylesheet" type="text/css">
-  <style>
-  .modal-content{
-  width: 600px;
-  margin:auto;
-}
-</style>
-  
-</head>
+  <!-- Material Kit CSS -->
+  <link href="{%  static 'css/dashboard2.css' %}" rel="stylesheet" /></head>
 
+<body>
+  <div class="wrapper ">
+    <div class="sidebar" data-color="purple" data-background-color="white">
+      <!--
+      Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
 
-
-  <!-- Start your project here-->
-  <body >
-
-<!--Navbar -->
-<!--Navbar-->
-<nav class="navbar navbar-expand-lg  navbar-dark cyan">
-
-  <!-- Navbar brand -->
-  
-
-<a class="navbar-brand" href="#">
-    <img src="{%  static 'img/Sv-University-logo2.png' %}" height="80" width="100" alt="svu logo">SVU Health Centre
-  </a>
-
-
-  <!-- Collapse button -->
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
-    aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <!-- Collapsible content -->
-  <div class="collapse navbar-collapse" id="basicExampleNav">
-
-    <!-- Links -->
-    <ul class="navbar-nav ml-auto ">
-      <li class="nav-item">
-        <a class="nav-link" href="/Staff/Staffpage/">Home
-
+      Tip 2: you can also add an image using data-image tag
+  -->
+      <div class="logo">
+        <img src="{% static 'img/Sv-University-logo2.png' %}" height="80" width="100" alt="logo" class="simple-text logo-mini ml-5" >
+        <a class="simple-text logo-normal mr-5">
+          SVU HEALTH CENTRE
         </a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="#">OP Form</a>
-          <span class="sr-only">(current)</span>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/Staff/Staffpage/LogOut/">LogOut</a>
-      </li>
+      </div>
+      <div class="sidebar-wrapper">
+        <ul class="nav">
+          <li class="nav-item active  ">
+            <a class="nav-link" href="/Staff/StaffPage/ManageStudents/">
+              <i class="material-icons">dashboard</i>
+              <p>Students</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/Staff/StaffPage/ManageFaculty/">
+              <i class="material-icons">dashboard</i>
+              <p>Faculty</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/Staff/StaffPage/ManageStaff/">
+              <i class="material-icons">dashboard</i>
+              <p>Staff</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/Staff/StaffPage/ManageStock/">
+              <i class="material-icons">dashboard</i>
+              <p>Stock</p>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="main-panel">
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
+        <div class="container-fluid">
+          <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="navbar-toggler-icon icon-bar"></span>
+            <span class="navbar-toggler-icon icon-bar"></span>
+            <span class="navbar-toggler-icon icon-bar"></span>
+          </button>
+          <div class="collapse navbar-collapse justify-content-end">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                <a class="nav-link" href="#">
+                  <i class="material-icons">dashboard</i> Dashboard
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/Staff/StaffPage/LogOut/">
+                  <i class="material-icons">notifications</i> LogOut
+                </a>
+              </li>
+              <!-- your navbar here -->
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <!-- End Navbar -->
+      <div class="content">
+        <div class="container-fluid">
 
-      <!-- Dropdown -->
-      
-
-    </ul>
-    <!-- Links -->
-
-   
-  </div>
-  <!-- Collapsible content -->
-
-</nav>
-<!--/.Navbar-->
-
-  {% if Details %}
-  <div class="row offset-2">
-  <div class="col-md-8">
+<div class="col-md-10 ml-5">
 <div class="table-responsive" id="printableArea">
             <table class="table" id="StudentDetails">
               <thead>
@@ -110,11 +125,30 @@
 <center><a class="btn btn-indigo" onclick="printDiv('printableArea')">Print OP</a>
   </center>
   </div>
+        </div>
       </div>
-{% endif %}
-  <!-- SCRIPTS -->
-  <!-- JQuery -->
-
+      <footer class="footer">
+        <div class="container-fluid">
+          <nav class="float-left">
+            <ul>
+              <li>
+                <a href="#">
+                  SVU HEALTH CENTRE
+                </a>
+              </li>
+            </ul>
+          </nav>
+          <div class="copyright float-right">
+            &copy;
+            <script>
+              document.write(new Date().getFullYear())
+            </script>, svuhealthcenter.org.
+          </div>
+          <!-- your footer here -->
+        </div>
+      </footer>
+    </div>
+  </div>
   <script type="text/javascript" src="{%  static 'js/jquery-3.3.1.min.js' %}"></script>
   <!-- Bootstrap tooltips -->
   <script type="text/javascript" src="{%  static 'js/popper.min.js' %}"></script>
@@ -122,7 +156,6 @@
   <script type="text/javascript" src="{%  static 'js/bootstrap.min.js' %}"></script>
   <!-- MDB core JavaScript -->
   <script type="text/javascript" src="{%  static 'js/mdb.js' %}"></script>
-
   <script >
  function printContent(el){
    var restorepage = document.body.innerHTML;

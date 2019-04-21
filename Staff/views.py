@@ -1,14 +1,13 @@
 from django.shortcuts import render, redirect
 from . import models
-from Admin.models import AddStaff, PharmacyAvailableStock, StudentTabDetails, StudentMedicineIssue,OPDetails
+from Admin.models import AddStaff, PharmacyAvailableStock, StudentTabDetails, StudentMedicineIssue,OPDetails,PharmacyIssuedStock
 from Student.models import Student
 from django.http import HttpResponse
+from django.contrib import messages
 import json
 
 
 # Create your views here.
-
-
 def stafflogin(request):
     if request.method == 'POST':
         Username = request.POST['Username']
@@ -19,7 +18,7 @@ def stafflogin(request):
             pwd = x.Password
             if Password == pwd:
                 request.session['StaffId'] = x.StaffId
-                return redirect('Staffpage')
+                return redirect('StaffPage')
             else:
                 return HttpResponse('Wrong Username/Password Combination')
         except:
@@ -28,30 +27,30 @@ def stafflogin(request):
     return render(request, "stafflogin.html")
 
 
-def staffhome(request):
-    if request.session.has_key('StaffId'):
-        StaffId = request.session['StaffId']
-        return render(request, "StaffPage.html", {'StaffId': StaffId})
-    else:
-        return redirect('stafflogin')
-
-
 def stafflogout(request):
     if request.session.has_key('StaffId'):
         request.session.flush()
         return redirect('stafflogin')
 
 
-def GetStudent(request):
+def ManageStudents(request):
     if request.session.has_key('StaffId'):
-        StaffId = request.session['StaffId']
-        if request.method == 'POST':
-            admno = request.POST['Admission_number']
-            rec = Student.objects.get(Admission_number=admno)
-            return render(request, "StaffPage.html", {'StaffId': StaffId, 'Details':rec})
+        return render(request, 'students.html')
 
-    else:
-        return redirect('stafflogin')
+
+def VerifyStudent(request):
+    if request.session.has_key('StaffId'):
+        if request.method == 'POST':
+            try:
+                admno = request.POST['Admission_number']
+                rec = Student.objects.get(Admission_number=admno)
+                return render(request, "StudentDetails.html", {'Details':rec})
+            except:
+                messages.add_message(request, messages.INFO, 'No Details Found for the Entered Admission Number.')
+                return render(request,'GetStdentDetails.html')
+        else:
+            return render(request, 'GetStdentDetails.html')
+    return redirect('stafflogin')
 
 
 def generateop(request, Admission_number):
@@ -113,7 +112,8 @@ def StudentMedicineissue(request,op_number):
 
                 insert.save()
                 i += 1
-            return render(request, 'StudentMedincineIssue.html')
+            messages.add_message(request, messages.INFO, 'Medicine Issued Successfully.')
+            return redirect('issuedops')
 
         else:
             tabs = PharmacyAvailableStock.objects.all()
@@ -133,3 +133,37 @@ def viewopissue(request, op_number):
     else:
         return redirect('stafflogin')
 
+
+def PharmaStockRecieved(request):
+    if request.session.has_key('admin'):
+        PharmaIssues = PharmacyIssuedStock.objects.all()
+        return render(request, 'PharmaStockRecieved.html', {'PharmaIssues': PharmaIssues})
+    return redirect('stafflogin')
+
+
+def PharmaStockAvailable(request):
+    if request.session.has_key('admin'):
+        PharmaStock = PharmacyAvailableStock.objects.all()
+        return render(request,'PharmaStockAvailable.html',{'PharmaStock':PharmaStock})
+    return redirect('stafflogin')
+
+def PharmaLowStock(request):
+    if request.session.has_key('admin'):
+        LowStock = PharmacyAvailableStock.objects.filter(TotalTabs__lte = 50)
+        return render(request, 'PharmaLowStock.html', {'LowStock':LowStock})
+    return redirect('stafflogin')
+
+
+def ManageFaculty(request):
+    if request.session.has_key('StaffId'):
+        return render(request, 'Faculty.html')
+
+
+def ManageStaff(request):
+    if request.session.has_key('StaffId'):
+        return render(request, 'Staff.html')
+
+
+def ManagStock(request):
+    if request.session.has_key('StaffId'):
+        return render(request, 'Stock.html')

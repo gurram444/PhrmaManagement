@@ -1,9 +1,10 @@
 from django.http import HttpResponse
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 
 # Create your views here.
 from django.views.generic import View
 from . import models
+
 
 def studentregister(request):
     if request.method == 'POST':
