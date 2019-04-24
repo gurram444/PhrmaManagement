@@ -43,13 +43,13 @@
               <p>Manage Students</p>
             </a>
           </li>
-          <li class="nav-item active">
+          <li class="nav-item">
             <a class="nav-link" href="/Admin/AdminPage/ManageStaff/">
               <i class="material-icons">group_add</i>
               <p>Manage Staff</p>
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item active">
             <a class="nav-link" href="/Admin/AdminPage/ManageStock/">
               <i class="material-icons">add_shopping_cart</i>
               <p>Manage Stock</p>
@@ -88,96 +88,59 @@
       <!-- End Navbar -->
       <div class="content">
         <div class="container-fluid">
-        <div class="row">
-            <div class="card-deck ml-4">
+        <!--message-->
+            {% if messages %}
+                {% for msg in messages %}
+                    <div class="alert alert-success alert-with-icon" data-notify="container">
+                    <i class="material-icons" data-notify="icon">add_alert</i>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <i class="material-icons">close</i>
+                    </button>
+                    <span data-notify="message">{{msg.message}}</span>
+                  </div>
+                {% endfor %}
+            {% endif %}
+          <!--message ending-->
+        {% if invoicedetails %}
+            <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title ">Invoice Details</h4>
+                  <p class="card-category"> These are the invoice details.</p>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead class=" text-primary">
+                        <tr>
 
-<div class="card border-primary mb-3" style="max-width: 23rem;">
 
-  <div class="card-body text-primary">
-    <h5 class="card-title"><i class="fas fa-user-plus fa-2x"></i> Add Staff Member</h5>
-    <p class="card-text">Click Here to add a new staff member into pharmacy.</p>
-    <a class="btn blue-gradient" href="#" data-toggle="modal" data-target="#AddStaffForm">Add Staff</a>
-  </div>
-  <!--Add Staff Popover-->
-<div class="modal fade" id="AddStaffForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-        <form method="POST" action="./AddStaff" enctype="multipart/form-data">
-            {% csrf_token %}
-      <div class="modal-header text-center light-blue darken-3 white-text ">
-        <h4 class="modal-title w-100 font-weight-bold"><i class="fas fa-users"></i> Add Staff Member!</h4>
-        <button type="button" class="btn-primary p-2 btn-rounded close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-      </div>
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <i class="fas fa-info prefix grey-text"></i>
-          <input type="text" id="sid" class="form-control" name="StaffId">
-          <label >Staff Id</label>
-        </div>
-
-        <div class="md-form mb-5">
-          <i class="fas fa-user-edit prefix grey-text"></i>
-          <input type="text" id="sname" class="form-control" name="StaffName">
-          <label >Staff Name</label>
-        </div>
-
-        <div class="md-form mb-5">
-          <i class="fas fa-phone prefix grey-text"></i>
-          <input type="text" id="contact" class="form-control" name="ContactNumber">
-          <label >Contact Number</label>
-        </div>
-
-        <div class="md-form mb-5">
-          <i class="fas fa-envelope prefix grey-text"></i>
-          <input type="text" id="defaultForm-email" class="form-control" name="UserName">
-          <label >User Name</label>
-        </div>
-
-        <div class="md-form mb-5">
-          <i class="fas fa-lock prefix grey-text"></i>
-          <input type="password" id="defaultForm-pass" class="form-control" name="Password">
-          <label >Password</label>
-        </div>
-
-        <div class="md-form mb-3">
-          <i class="fas fa-camera-retro prefix grey-text"></i>
-          <input type="file" id="image" class="form-control" name="StaffImage">
-          <label >Staff Image</label>
-        </div>
-
-      </div>
-      <div class="modal-footer d-flex justify-content-center">
-        <button class="btn btn-default" type="submit">Add Staff</button>
-      </div>
-    </form>
-    </div>
-  </div>
-</div>
-<!--ending Add Staff Popover-->
-
-</div>
-
-<div class="card border-primary mb-3" style="max-width: 23rem;">
-
-  <div class="card-body text-primary">
-    <h5 class="card-title"><i class="fas fa-user-times fa-2x"></i> View Staff Members</h5>
-    <p class="card-text">Click Here to view all existing staff members of pharmacy.</p>
-    <a class="btn blue-gradient" href="./ViewExistingStaff/">View Staff</a>
-  </div>
-</div>
-
-<div class="card border-primary mb-3" style="max-width: 23rem;">
-
-  <div class="card-body text-primary">
-    <h5 class="card-title"><i class="fas fa-scroll fa-2x"></i> View Reports</h5>
-    <p class="card-text">Click Here to view reports submitted by the phramacy staff.</p>
-    <a class="btn blue-gradient" href="#">View Reports</a>
-  </div>
-</div>
-
-</div>
-        </div>
+                  <th>Tablet Name</th>
+                  <th>Total Tablets Recieved</th>
+                  <th>Rate/Unit</th>
+                  </tr>
+                      </thead>
+                      <tbody>
+                       {% for y in invoicedetails %}
+                            <tr>
+                            <td>{{y.TabletName}}</td>
+                            <td>{{y.TotalTabsRecieved}}</td>
+                            <td>{{y.RatePerUnit}}</td>
+                             </tr>
+                         {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+        {% else %}
+        <div class="alert alert-success alert-with-icon" data-notify="container">
+                    <i class="material-icons" data-notify="icon">add_alert</i>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <i class="material-icons">close</i>
+                    </button>
+                    <span data-notify="message">There are No details for this invoice.</span>
+                  </div>
+        {% endif %}
         </div>
       </div>
       <footer class="footer">

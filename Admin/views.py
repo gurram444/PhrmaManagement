@@ -249,8 +249,16 @@ def DisplayAvailableStock(request):
 
 def DisplayMainStock(request):
     if request.session.has_key('admin'):
-        invoice = models.TabDetails.objects.all()
+        invoice = models.Invoice.objects.all()
         return render(request, 'invoices.html', {'invoices': invoice})
+    return redirect('Adminlogin')
+
+
+def InvoiceDetails(request,InvoiceNumber):
+    if request.session.has_key('admin'):
+        invoice = models.Invoice.objects.get(Invoice_number=InvoiceNumber)
+        invoiceid = models.TabDetails.objects.filter(Invoice_id=invoice)
+        return render(request, 'invoicedetails.html', {'invoicedetails':invoiceid})
     return redirect('Adminlogin')
 
 

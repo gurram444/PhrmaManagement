@@ -3,7 +3,7 @@ from django.conf.urls import url
 from . import views
 urlpatterns = [
     path('Login/', views.stafflogin, name='stafflogin'),
-    path('StaffPage/LogOut/', views.stafflogout),
+    path('StaffPage/Logout/', views.stafflogout),
     path('StaffPage/ManageStudents/', views.ManageStudents, name='StaffPage' ),
     path('StaffPage/ManageStudents/VerifyStudent/', views.VerifyStudent),
     url(r'^StaffPage/ManageStudents/VerifyStudent/GenerateOP/(?P<Admission_number>\d+)$', views.generateop),

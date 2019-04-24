@@ -19,6 +19,7 @@ urlpatterns = [
     path('AdminPage/ManageStock/MainStockEntry/', views.AddStock),
     path('AdminPage/ManageStock/DisplayAvailbleStock/', views.DisplayAvailableStock),
     path('AdminPage/ManageStock/DisplayInvoices/',views.DisplayMainStock),
+    url(r'^AdminPage/ManageStock/DisplayInvoices/ViewDetails/(?P<InvoiceNumber>\d+)$', views.InvoiceDetails),
     path('AdminPage/ManageStock/PharmacyStockIssue/',views.PhramcyStockIssue),
     path('AdminPage/ManageStock/DisplayPharmaAvailableStock/', views.DisplayPharmaAvailableStock),
     path('AdminPage/ManageStock/DisplayPharmaIssues/', views.DisplayPharmaIssues, name='DisplayPharmaIssues'),

@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-  <title>SVU HEALTH CENTRE</title>
+  <title>Student Profile</title>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
@@ -38,27 +38,21 @@
       <div class="sidebar-wrapper">
         <ul class="nav">
           <li class="nav-item active  ">
-            <a class="nav-link" href="/Staff/StaffPage/ManageStudents/">
-             <i class="fas fa-user-graduate"></i>
-              <p>Students</p>
+            <a class="nav-link" href="/Student/StudentProfile/">
+              <i class="material-icons">person</i>
+              <p>User profile</p>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/Staff/StaffPage/ManageFaculty/">
-              <i class="fas fa-user-tie"></i>
-              <p>Faculty</p>
+            <a class="nav-link" href="/Student/UpdateProfile/">
+              <i class="material-icons">update</i>
+              <p>Update Profile</p>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/Staff/StaffPage/ManageStaff/">
-              <i class="fas fa-user-nurse"></i>
-              <p>Staff</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/Staff/StaffPage/ManageStock/">
-              <i class="fas fa-medkit"></i>
-              <p>Stock</p>
+            <a class="nav-link" href="/Student/Transactions/">
+              <i class="material-icons">list</i>
+              <p>View Transactions</p>
             </a>
           </li>
         </ul>
@@ -77,13 +71,13 @@
           <div class="collapse navbar-collapse justify-content-end">
             <ul class="navbar-nav">
                 <li class="nav-item active">
-                <a class="nav-link" href="/Staff/StaffPage/ManageStudents/">
+                <a class="nav-link" href="/Student/StudentProfile/">
                   <i class="material-icons">dashboard</i> Dashboard
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/Staff/StaffPage/Logout/">
-                  <i class="fas fa-sign-out-alt fa-2x"></i> LogOut
+                <a class="nav-link" href="/Student/Logout/">
+                  <i class="material-icons">notifications</i> LogOut
                 </a>
               </li>
               <!-- your navbar here -->
@@ -94,37 +88,60 @@
       <!-- End Navbar -->
       <div class="content">
         <div class="container-fluid">
+        <div class="row ml-5">
+        <div class="col-md-4">
+              <div class="card card-profile">
+                <div class="card-avatar">
+                  <a href="#">
+                    <img class="img" src="{{x.profile_image.url}}" />
+                  </a>
+                </div>
+                <div class="card-body">
+                  <h6 class="card-category text-gray">{{ x.department }}</h6>
+                  <h4 class="card-title">{{ x.Student_name }}</h4>
+                  <p class="card-description">
+                    Contact No: {{ x.contact_no }}  <br>
+                    E-maill: {{ x.email }}<br>
+                  <a href="#pablo" class="btn btn-primary btn-round">Follow</a>
+                </div>
+              </div>
+            </div>
 
-<div class="col-md-10 ml-5">
-<div class="table-responsive" id="printableArea">
-            <table class="table" id="StudentDetails">
-              <thead>
-                <tr><th><img src="{%  static 'img/Sv-University-logo2.png' %}" height="80" width="100" alt="svu logo"></th>
-                    <th colspan="2"><h3>SVU HEALTH CENTRE OP FORM</h3></th></tr>
-              </thead>
-              <tbody>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                <div class="card-header card-header-success card-header-icon">
+                  <div class="card-icon">
+                    <i class="material-icons">store</i>
+                  </div>
+                  <p class="card-category">Number of Visits</p>
+                  <h3 class="card-title">{{ visits }}</h3>
+                </div>
+                <div class="card-footer">
+                  <div class="stats">
+                    <i class="material-icons">date_range</i> from joining date
+                  </div>
+                </div>
+              </div>
+            </div>
 
+            <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                <div class="card-header card-header-danger card-header-icon">
+                  <div class="card-icon">
+                    <i class="material-icons">info_outline</i>
+                  </div>
+                  <p class="card-category">Last Visited On</p>
+                  <h4 class="card-title">{{ last.IssueDate }}</h4>
+                </div>
+                <div class="card-footer">
+                  <div class="stats">
+                    <i class="material-icons">local_offer</i> Tracked from SVUHC
+                  </div>
+                </div>
+              </div>
+            </div>
 
-                            <tr>
-                                <td><h6>OP Number : {{ op_no.OPNumber }}</h6></td>
-                                <td><h6>Admision Number : {{ Details.Admission_number }}</h6></td>
-                                <td><h6>Date : {% now "d-m-Y" %}</h6></td>
-                            </tr>
-                            <tr>
-                                <td><h6>Student Name : {{ Details.Student_name }}</h6></td>
-                                <td><h6>Age : {{ Details.Age }}</h6></td>
-                                <td><h6>Contact Number : {{ Details.contact_no }}</h6></td>
-                            </tr>
-                            <tr>
-                                <td colspan="3"></td>
-                            </tr>
-
-              </tbody>
-            </table>
-          </div>
-<center><a class="btn btn-indigo" onclick="printDiv('printableArea')">Print OP</a>
-  </center>
-  </div>
+            </div>
         </div>
       </div>
       <footer class="footer">
@@ -156,28 +173,6 @@
   <script type="text/javascript" src="{%  static 'js/bootstrap.min.js' %}"></script>
   <!-- MDB core JavaScript -->
   <script type="text/javascript" src="{%  static 'js/mdb.js' %}"></script>
-  <script >
- function printContent(el){
-   var restorepage = document.body.innerHTML;
-   var printcontent= document.getElementById(el).innerHTML;
-   document.body.innerHTML=printcontent;
-   window.print();
-   document.body.innerHTML=restorepage;
- }
- </script>
-<script>
-  function printDiv(divName) {
-     var printContents = document.getElementById(divName).innerHTML;
-     var originalContents = document.body.innerHTML;
-
-     document.body.innerHTML = printContents;
-
-     window.print();
-
-     document.body.innerHTML = originalContents;
-}
-
-</script>
 </body>
 
 </html>

@@ -36,6 +36,7 @@ def stafflogout(request):
 def ManageStudents(request):
     if request.session.has_key('StaffId'):
         return render(request, 'students.html')
+    return redirect('stafflogin')
 
 
 def VerifyStudent(request):
@@ -135,20 +136,20 @@ def viewopissue(request, op_number):
 
 
 def PharmaStockRecieved(request):
-    if request.session.has_key('admin'):
+    if request.session.has_key('StaffId'):
         PharmaIssues = PharmacyIssuedStock.objects.all()
         return render(request, 'PharmaStockRecieved.html', {'PharmaIssues': PharmaIssues})
     return redirect('stafflogin')
 
 
 def PharmaStockAvailable(request):
-    if request.session.has_key('admin'):
+    if request.session.has_key('StaffId'):
         PharmaStock = PharmacyAvailableStock.objects.all()
         return render(request,'PharmaStockAvailable.html',{'PharmaStock':PharmaStock})
     return redirect('stafflogin')
 
 def PharmaLowStock(request):
-    if request.session.has_key('admin'):
+    if request.session.has_key('StaffId'):
         LowStock = PharmacyAvailableStock.objects.filter(TotalTabs__lte = 50)
         return render(request, 'PharmaLowStock.html', {'LowStock':LowStock})
     return redirect('stafflogin')
@@ -157,13 +158,16 @@ def PharmaLowStock(request):
 def ManageFaculty(request):
     if request.session.has_key('StaffId'):
         return render(request, 'Faculty.html')
+    return redirect('stafflogin')
 
 
 def ManageStaff(request):
     if request.session.has_key('StaffId'):
         return render(request, 'Staff.html')
+    return redirect('stafflogin')
 
 
 def ManagStock(request):
     if request.session.has_key('StaffId'):
         return render(request, 'Stock.html')
+    return redirect('stafflogin')

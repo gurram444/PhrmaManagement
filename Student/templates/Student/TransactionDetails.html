@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-  <title>SVU HEALTH CENTRE</title>
+  <title>OP Details</title>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
@@ -37,28 +37,22 @@
       </div>
       <div class="sidebar-wrapper">
         <ul class="nav">
-          <li class="nav-item active  ">
-            <a class="nav-link" href="/Staff/StaffPage/ManageStudents/">
-             <i class="fas fa-user-graduate"></i>
-              <p>Students</p>
+          <li class="nav-item">
+            <a class="nav-link" href="/Student/StudentProfile/">
+              <i class="material-icons">person</i>
+              <p>User profile</p>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/Staff/StaffPage/ManageFaculty/">
-              <i class="fas fa-user-tie"></i>
-              <p>Faculty</p>
+            <a class="nav-link" href="/Student/UpdateProfile/">
+              <i class="material-icons">update</i>
+              <p>Update Profile</p>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/Staff/StaffPage/ManageStaff/">
-              <i class="fas fa-user-nurse"></i>
-              <p>Staff</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/Staff/StaffPage/ManageStock/">
-              <i class="fas fa-medkit"></i>
-              <p>Stock</p>
+          <li class="nav-item active">
+            <a class="nav-link" href="/Student/Transactions/">
+              <i class="material-icons">list</i>
+              <p>View Transactions</p>
             </a>
           </li>
         </ul>
@@ -77,13 +71,13 @@
           <div class="collapse navbar-collapse justify-content-end">
             <ul class="navbar-nav">
                 <li class="nav-item active">
-                <a class="nav-link" href="/Staff/StaffPage/ManageStudents/">
+                <a class="nav-link" href="/Student/StudentProfile/">
                   <i class="material-icons">dashboard</i> Dashboard
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/Staff/StaffPage/Logout/">
-                  <i class="fas fa-sign-out-alt fa-2x"></i> LogOut
+                <a class="nav-link" href="/Student/Logout/">
+                  <i class="material-icons">notifications</i> LogOut
                 </a>
               </li>
               <!-- your navbar here -->
@@ -94,37 +88,61 @@
       <!-- End Navbar -->
       <div class="content">
         <div class="container-fluid">
+        <!--message-->
+            {% if messages %}
+                {% for msg in messages %}
+                    <div class="alert alert-success alert-with-icon" data-notify="container">
+                    <i class="material-icons" data-notify="icon">add_alert</i>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <i class="material-icons">close</i>
+                    </button>
+                    <span data-notify="message">{{msg.message}}</span>
+                  </div>
+                {% endfor %}
+            {% endif %}
+          <!--message ending-->
+        {% if tabs %}
+            <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title ">OP Details</h4>
+                  <p class="card-category"> Here are the Details of your op.</p>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead class=" text-primary">
+                        <tr>
 
-<div class="col-md-10 ml-5">
-<div class="table-responsive" id="printableArea">
-            <table class="table" id="StudentDetails">
-              <thead>
-                <tr><th><img src="{%  static 'img/Sv-University-logo2.png' %}" height="80" width="100" alt="svu logo"></th>
-                    <th colspan="2"><h3>SVU HEALTH CENTRE OP FORM</h3></th></tr>
-              </thead>
-              <tbody>
-
-
+                  <th>Tablet Name</th>
+                  <th>Total Tabs Issued</th>
+                  <th>Rate/Unit</th>
+                  </tr>
+                      </thead>
+                      <tbody>
+                       {% for y in tabs %}
                             <tr>
-                                <td><h6>OP Number : {{ op_no.OPNumber }}</h6></td>
-                                <td><h6>Admision Number : {{ Details.Admission_number }}</h6></td>
-                                <td><h6>Date : {% now "d-m-Y" %}</h6></td>
-                            </tr>
-                            <tr>
-                                <td><h6>Student Name : {{ Details.Student_name }}</h6></td>
-                                <td><h6>Age : {{ Details.Age }}</h6></td>
-                                <td><h6>Contact Number : {{ Details.contact_no }}</h6></td>
-                            </tr>
-                            <tr>
-                                <td colspan="3"></td>
-                            </tr>
 
-              </tbody>
-            </table>
-          </div>
-<center><a class="btn btn-indigo" onclick="printDiv('printableArea')">Print OP</a>
-  </center>
-  </div>
+                            <td>{{y.TabletName}}</td>
+                            <td>{{y.TotalTabsIssued}}</td>
+                            <td>{{y.RatePerUnit}}</td>
+
+
+                            </tr>
+                         {% endfor%}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+        {% else %}
+        <div class="alert alert-success alert-with-icon" data-notify="container">
+                    <i class="material-icons" data-notify="icon">add_alert</i>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <i class="material-icons">close</i>
+                    </button>
+                    <span data-notify="message">No Tablets Issued For this OP.</span>
+                  </div>
+        {% endif %}
         </div>
       </div>
       <footer class="footer">
@@ -156,28 +174,6 @@
   <script type="text/javascript" src="{%  static 'js/bootstrap.min.js' %}"></script>
   <!-- MDB core JavaScript -->
   <script type="text/javascript" src="{%  static 'js/mdb.js' %}"></script>
-  <script >
- function printContent(el){
-   var restorepage = document.body.innerHTML;
-   var printcontent= document.getElementById(el).innerHTML;
-   document.body.innerHTML=printcontent;
-   window.print();
-   document.body.innerHTML=restorepage;
- }
- </script>
-<script>
-  function printDiv(divName) {
-     var printContents = document.getElementById(divName).innerHTML;
-     var originalContents = document.body.innerHTML;
-
-     document.body.innerHTML = printContents;
-
-     window.print();
-
-     document.body.innerHTML = originalContents;
-}
-
-</script>
 </body>
 
 </html>
