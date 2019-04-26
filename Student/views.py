@@ -81,7 +81,8 @@ def UpdateProfile(request):
                                     city=city)
 
             insert.save()
-            return redirect('LoggedIn')
+            messages.add_message(request, messages.INFO, 'Registration Successfully completed, You can login to your account once its activated.')
+            return redirect('studentlogin')
 
         return render(request, 'Student/updateprofile.html')
     return redirect('studentlogin')

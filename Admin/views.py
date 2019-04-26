@@ -52,10 +52,9 @@ def GetStudent(request):
                 visits = rec.count()
                 lastvisit = rec.last()
                 return render(request, 'studentprofile.html',
-                              {'Admission_number': Admission_number, 'x': x, 'visits': visits, 'last': lastvisit,
-                               'rec': rec})
+                                  {'Admission_number': Admission_number, 'x': x, 'visits': visits, 'last': lastvisit,'rec': rec})
             except:
-                messages.add_message(request, messages.INFO, 'No Details Found for the Entered Admission Number.')
+                messages.add_message(request,messages.INFO,'NO Details Found for the entered admission number.')
                 return render(request, 'GetStudentDetails.html')
         return render(request, 'GetStudentDetails.html')
     return redirect('Adminlogin')
