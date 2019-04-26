@@ -88,51 +88,42 @@
       <!-- End Navbar -->
       <div class="content">
         <div class="container-fluid">
-            <div class="row">
-<div class="card-deck ml-4">
-
-<div class="card border-primary mb-3" style="max-width: 23rem;">
-  <div class="card-header bg-primary">
-  <button type="button" class="btn btn-indigo">
-  Regisration Requests <span class="badge badge-danger ml-2">{{ rec }}</span>
-</button>
-</div>
-  <div class="card-body text-primary">
-    <h5 class="card-title"><i class="fas fa-file-signature fa-2x"></i> Registration Requests</h5>
-    <p class="card-text">Click Here to view and accept registration requests.</p>
-    <a class="btn blue-gradient" href="./ViewStudentRegistrations/">View Registrations</a>
-  </div>
-</div>
-<div class="card-deck">
-<div class="card border-primary mb-3" style="max-width: 23rem;">
-  <div class="card-header bg-primary">
-    <button type="button" class="btn btn-indigo">
-  Registered Students <span class="badge badge-danger ml-2">{{ reg }}</span>
-</button>
-  </div>
-  <div class="card-body text-primary">
-    <h5 class="card-title"><i class="fas fa-address-card fa-2x"></i> Registered Students</h5>
-    <p class="card-text">Click Here to view and accept registration requests.</p>
-    <a class="btn blue-gradient" href="./ViewRegisteredStudents">Registered Students</a>
-  </div>
-</div>
-
-<div class="card border-primary mb-3" style="max-width: 23rem;">
-  <div class="card-header bg-primary">
-    <button type="button" class="btn btn-indigo">
-  Student Details
-</button>
-  </div>
-  <div class="card-body text-primary">
-    <h5 class="card-title"><i class="fas fa-id-badge fa-2x"></i> Student Details</h5>
-    <p class="card-text">Click Here to view and accept registration requests.</p>
-    <a class="btn blue-gradient" href="./GetStudent/">Student Details</a>
-  </div>
-</div>
+            <!--message-->
+            {% if messages %}
+                {% for msg in messages %}
+                    <div class="alert alert-danger alert-with-icon" data-notify="container">
+                    <i class="material-icons" data-notify="icon">add_alert</i>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <i class="material-icons">close</i>
+                    </button>
+                    <span data-notify="message">{{msg.message}}</span>
+                  </div>
+                {% endfor %}
+            {% endif %}
+          <!--message ending-->
+            <div class="ml-5">
+        <div class="card offset-md-2 offset-sm-0 " style="max-width: 20rem;">
+    <div class="card-header text-center light-blue darken-3 white-text ">
+    <h4 class="card-title white-text"><i class="fas fa-notes-medical"></i> Student Details!</h4>
     </div>
+    <div class="card-body p-5">
+
+<form method="POST" action="">
+      {% csrf_token %}
+        <div class="col-md-12">
+          <div class="md-form mb-5">
+            <i class="fas fa-toilet-paper prefix grey-text"></i>
+            <input type="text"  class="form-control" name="Admission_number" required>
+            <label >Student Id</label>
+          </div>
+        </div>
+      <div class="text-center">
+        <button class="btn btn-default" type="submit">Get Details</button>
+      </div>
+</form>
 
 </div>
-
+</div>
 </div>
         </div>
       </div>

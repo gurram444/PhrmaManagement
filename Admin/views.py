@@ -40,6 +40,33 @@ def ManageStudent(request):
         return render(request, "ManageStudent.html", {'rec': recs, 'reg': regs})
     return redirect('Adminlogin')
 
+def GetStudent(request):
+    if request.session.has_key('admin'):
+        if request.method == 'POST':
+            try:
+                Admission_number = request.POST['Admission_number']
+                x = Student.objects.get(Admission_number=Admission_number)
+                print(x)
+                rec = models.OPDetails.objects.filter(AdmissionNumber=Admission_number)
+                print(rec)
+                visits = rec.count()
+                lastvisit = rec.last()
+                return render(request, 'studentprofile.html',
+                              {'Admission_number': Admission_number, 'x': x, 'visits': visits, 'last': lastvisit,
+                               'rec': rec})
+            except:
+                messages.add_message(request, messages.INFO, 'No Details Found for the Entered Admission Number.')
+                return render(request, 'GetStudentDetails.html')
+        return render(request, 'GetStudentDetails.html')
+    return redirect('Adminlogin')
+
+def tabdetails(request,OPNumber):
+    if request.session.has_key('admin'):
+        op_id = models.OPDetails.objects.get(OPNumber=OPNumber)
+        tabs= models.StudentMedicineIssue.objects.filter(Op_id=op_id)
+        return render(request, 'studenttabdetails.html', {'tabs':tabs})
+    return redirect('Adminlogin')
+
 
 def ManageStaff(request):
     if request.session.has_key('admin'):

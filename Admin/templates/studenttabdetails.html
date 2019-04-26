@@ -88,52 +88,61 @@
       <!-- End Navbar -->
       <div class="content">
         <div class="container-fluid">
-            <div class="row">
-<div class="card-deck ml-4">
+            <!--message-->
+            {% if messages %}
+                {% for msg in messages %}
+                    <div class="alert alert-success alert-with-icon" data-notify="container">
+                    <i class="material-icons" data-notify="icon">add_alert</i>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <i class="material-icons">close</i>
+                    </button>
+                    <span data-notify="message">{{msg.message}}</span>
+                  </div>
+                {% endfor %}
+            {% endif %}
+          <!--message ending-->
+        {% if tabs %}
+            <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title ">OP Details</h4>
+                  <p class="card-category"> Here are the Details of your op.</p>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead class=" text-primary">
+                        <tr>
 
-<div class="card border-primary mb-3" style="max-width: 23rem;">
-  <div class="card-header bg-primary">
-  <button type="button" class="btn btn-indigo">
-  Regisration Requests <span class="badge badge-danger ml-2">{{ rec }}</span>
-</button>
-</div>
-  <div class="card-body text-primary">
-    <h5 class="card-title"><i class="fas fa-file-signature fa-2x"></i> Registration Requests</h5>
-    <p class="card-text">Click Here to view and accept registration requests.</p>
-    <a class="btn blue-gradient" href="./ViewStudentRegistrations/">View Registrations</a>
-  </div>
-</div>
-<div class="card-deck">
-<div class="card border-primary mb-3" style="max-width: 23rem;">
-  <div class="card-header bg-primary">
-    <button type="button" class="btn btn-indigo">
-  Registered Students <span class="badge badge-danger ml-2">{{ reg }}</span>
-</button>
-  </div>
-  <div class="card-body text-primary">
-    <h5 class="card-title"><i class="fas fa-address-card fa-2x"></i> Registered Students</h5>
-    <p class="card-text">Click Here to view and accept registration requests.</p>
-    <a class="btn blue-gradient" href="./ViewRegisteredStudents">Registered Students</a>
-  </div>
-</div>
+                  <th>Tablet Name</th>
+                  <th>Total Tabs Issued</th>
+                  <th>Rate/Unit</th>
+                  </tr>
+                      </thead>
+                      <tbody>
+                       {% for y in tabs %}
+                            <tr>
 
-<div class="card border-primary mb-3" style="max-width: 23rem;">
-  <div class="card-header bg-primary">
-    <button type="button" class="btn btn-indigo">
-  Student Details
-</button>
-  </div>
-  <div class="card-body text-primary">
-    <h5 class="card-title"><i class="fas fa-id-badge fa-2x"></i> Student Details</h5>
-    <p class="card-text">Click Here to view and accept registration requests.</p>
-    <a class="btn blue-gradient" href="./GetStudent/">Student Details</a>
-  </div>
-</div>
-    </div>
+                            <td>{{y.TabletName}}</td>
+                            <td>{{y.TotalTabsIssued}}</td>
+                            <td>{{y.RatePerUnit}}</td>
 
-</div>
 
-</div>
+                            </tr>
+                         {% endfor%}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+        {% else %}
+        <div class="alert alert-success alert-with-icon" data-notify="container">
+                    <i class="material-icons" data-notify="icon">add_alert</i>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <i class="material-icons">close</i>
+                    </button>
+                    <span data-notify="message">No Tablets Issued For this OP.</span>
+                  </div>
+        {% endif %}
         </div>
       </div>
       <footer class="footer">

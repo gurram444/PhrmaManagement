@@ -56,7 +56,7 @@ class PharmacyAvailableStock(models.Model):
 def increment_op_number():
     last_op = OPDetails.objects.all().order_by('id').last()
     if not last_op:
-         return 'SVU0001'
+         return 'SVU101'
     op_no = last_op.OPNumber
     op_int = int(op_no.split('SVU')[-1])
     new_op_int = op_int + 1

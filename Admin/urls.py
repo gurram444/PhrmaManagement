@@ -11,6 +11,8 @@ urlpatterns = [
     path('AdminPage/ManageStudent/ViewRegisteredStudents/',views.RegisteredStudents),
     url(r'^AdminPage/ManageStudent/ViewStudentRegistrations/AcceptRegistrationRequest/(?P<Admission_number>\d+)$', views.AcceptRegistrationRequest),
     url(r'^AdminPage/ManageStudent/ViewStudentRegistrations/RejectRegistrationRequest/(?P<Admission_number>\d+)$', views.RejectRegistrationRequest),
+    path('AdminPage/ManageStudent/GetStudent/', views.GetStudent),
+    url(r'^AdminPage/ManageStudent/GetStudent/ViewDetails/(?P<OPNumber>[A-Z0-9]+)', views.tabdetails),
     path('AdminPage/ManageStaff/', views.ManageStaff),
     path('AdminPage/ManageStaff/AddStaff', views.AddStaff),
     path('AdminPage/ManageStaff/ViewExistingStaff/', views.DisplayAvailableStaff, name='DisplayAvailableStaff'),
